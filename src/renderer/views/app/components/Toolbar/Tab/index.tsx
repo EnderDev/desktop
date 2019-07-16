@@ -224,6 +224,7 @@ export default observer(({ tab }: { tab: ITab }) => {
       onMouseLeave={onMouseLeave}
       visible={tab.tabGroupId === store.tabGroups.currentGroupId}
       ref={tab.ref}
+      title={tab.title}
     >
       <TabContainer
         style={{
