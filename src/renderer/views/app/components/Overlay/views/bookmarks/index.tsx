@@ -11,6 +11,8 @@ import { SelectionDialog } from '../../components/SelectionDialog';
 import { ContextMenu, ContextMenuItem } from '../../components/ContextMenu';
 import { icons } from '~/renderer/constants';
 import { Bookmark } from './Bookmark';
+import { remote } from 'electron';
+import { promises } from 'fs';
 
 const scrollRef = React.createRef<HTMLDivElement>();
 
@@ -48,6 +50,24 @@ const onClick = (e: React.MouseEvent) => {
   preventHiding(e);
   store.bookmarks.menuVisible = false;
 };
+
+const onImportClick = () => {
+  remote.dialog.showOpenDialog(
+    {
+      filters: [{ name: 'Bookmark file', extensions: ['html', 'jsonlz4'] }],
+    },
+    async (filePaths: string[]) => {
+      if (filePaths) {
+        const file = await promises.readFile(filePaths[0], 'utf8');
+        const res = await parse(file);
+
+        addImported(res.bookmarks);
+      }
+    },
+  );
+};
+
+const onExportClick = () => {};
 
 const BookmarksList = observer(() => {
   return (
