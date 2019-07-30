@@ -34,8 +34,8 @@
     "url": "https://github.com/wexond/wexond/issues"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV='dev' node fuse.js",
-    "build": "node fuse.js",
+    "dev": "cross-env NODE_ENV='dev' ts-node fuse.ts",
+    "build": "ts-node fuse.ts",
     "start": "cross-env ENV='dev' electron .",
     "compile-win32": "npm run build && electron-builder -w -p always",
     "compile-darwin": "npm run build && electron-builder -m -p always",
@@ -64,9 +64,10 @@
     "electron": "6.0.0",
     "electron-builder": "21.1.5",
     "electron-react-devtools": "0.5.3",
-    "fuse-box": "3.7.1",
+    "fuse-box": "4.0.0-alpha.61",
     "prettier": "1.18.2",
     "terser": "4.1.2",
+    "ts-node": "8.3.0",
     "tslint": "5.18.0",
     "tslint-config-airbnb": "5.11.1",
     "tslint-config-prettier": "1.18.0",
