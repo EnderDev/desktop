@@ -7,18 +7,19 @@ const production = process.env.NODE_ENV === 'dev' ? false : true;
 const getConfig = (target: string) => {
   return {
     homeDir: 'src/',
-    cache: !production,
-    devServer: !production,
-    watch: !production,
+    devServer: false,
     target,
     output: 'build/$name.js',
-    useTypescriptCompiler: true,
+    cache: { root: '.cache' },
+    dependencies: { ignoreAllExternal: true },
     alias: {
       '~': '~/',
     },
-    log: {
-      showBundledFiles: false,
-    },
+    watch: true,
+
+    // logging: {
+    //   level: 'verbose',
+    // },
   } as IPublicConfig;
 };
 
@@ -31,9 +32,10 @@ const getRendererConfig = (target: string) => {
 };
 
 const main = () => {
-  const cfg = getConfig('electron');
+  const cfg = getConfig('server');
 
   cfg.entry = 'main/index.ts';
+  cfg.autoStartEntry = true;
 
   const fuse = fusebox(cfg);
 
@@ -46,18 +48,12 @@ const main = () => {
 
 const renderer = () => {
   const cfg = getRendererConfig('electron');
+
   cfg.webIndex = {
     template: 'static/pages/app.html',
-    target: `app.html`,
+    target: 'app.html',
   };
-  cfg.entry = [
-    'renderer/views/app/index.tsx',
-    'renderer/views/auth/index.tsx',
-    'renderer/views/permissions/index.tsx',
-    'renderer/views/find/index.tsx',
-    'renderer/views/form-fill/index.tsx',
-    'renderer/views/credentials/index.tsx',
-  ];
+  cfg.entry = ['renderer/views/app/index.tsx'];
 
   const fuse = fusebox(cfg);
 
