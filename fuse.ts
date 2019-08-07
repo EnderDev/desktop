@@ -6,7 +6,6 @@ const production = process.env.NODE_ENV === 'dev' ? false : true;
 const getConfig = (target: string) => {
   return {
     homeDir: 'src/',
-    devServer: false,
     target,
     output: 'build/$name.js',
     cache: { root: '.cache' },
@@ -14,7 +13,6 @@ const getConfig = (target: string) => {
     alias: {
       '~': '~/',
     },
-    watch: true,
 
     // logging: {
     //   level: 'verbose',
@@ -31,17 +29,19 @@ const getRendererConfig = (target: string) => {
 };
 
 const main = () => {
-  const cfg = getConfig('server');
+  const cfg = getConfig('electron');
 
-  cfg.entry = 'main/index.ts';
+  cfg.homeDir = 'src/main';
+  cfg.entry = 'index.ts';
+  cfg.useSingleBundle = true;
 
   const fuse = fusebox(cfg);
 
-  if (!production) {
-    fuse.runDev();
-  } else {
-    fuse.runProd();
-  }
+  fuse.runDev(handler => {
+    handler.onComplete(output => {
+      output.electron.handleMainProcess();
+    });
+  })
 };
 
 const renderer = () => {
@@ -51,7 +51,6 @@ const renderer = () => {
     template: 'static/pages/app.html',
     target: 'app.html',
   };
-  cfg.useSingleBundle = true;
   cfg.entry = ['renderer/views/app/index.tsx'];
 
   const fuse = fusebox(cfg);
