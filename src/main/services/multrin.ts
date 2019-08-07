@@ -48,17 +48,15 @@ export class Multrin {
       }
     };
 
-    const { id } = this.appWindow.webContents;
-
-    ipcMain.on(`select-window-${id}`, (e: any, id: number) => {
+    ipcMain.on(`select-window`, (e: any, id: number) => {
       this.selectWindow(this.windows.find(x => x.id === id));
     });
 
-    ipcMain.on(`detach-window-${id}`, (e: any, id: number) => {
+    ipcMain.on(`detach-window`, (e: any, id: number) => {
       this.detachWindow(this.windows.find(x => x.id === id));
     });
 
-    ipcMain.on(`hide-window-${id}`, () => {
+    ipcMain.on(`hide-window`, () => {
       if (this.selectedWindow) {
         this.selectedWindow.hide();
         this.isWindowHidden = true;
