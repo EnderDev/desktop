@@ -175,11 +175,14 @@ export class View extends BrowserView {
     const item = await storage.findOne<any>({
       scope: 'formfill',
       query: {
-        url: this.hostname
+        url: this.hostname,
       },
     });
 
-    this.window.webContents.send(`has-credentials-${this.webContents.id}`, item != null);
+    this.window.webContents.send(
+      `has-credentials-${this.webContents.id}`,
+      item != null,
+    );
   }
 
   public get hostname() {

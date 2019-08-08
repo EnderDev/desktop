@@ -58,10 +58,6 @@ const onMouseLeave = () => {
 
 const onClick = (tab: ITab) => (e: React.MouseEvent<HTMLDivElement>) => {
   if (store.canToggleMenu && !tab.isWindow) {
-    if (!store.overlay.isNewTab) {
-      store.overlay.visible = !store.overlay.visible;
-    }
-
     store.canToggleMenu = false;
   }
 
@@ -194,10 +190,6 @@ const Close = observer(({ tab }: { tab: ITab }) => {
   );
 });
 
-const Border = observer(({ tab }: { tab: ITab }) => {
-  return <StyledBorder visible={tab.borderVisible} />;
-});
-
 const Overlay = observer(({ tab }: { tab: ITab }) => {
   return (
     <StyledOverlay
@@ -207,9 +199,7 @@ const Overlay = observer(({ tab }: { tab: ITab }) => {
           ? shadeBlendConvert(
               store.theme['tab.selectedHover.backgroundOpacity'],
               tab.background,
-              store.overlay.currentContent !== 'default'
-                ? store.theme['toolbar.overlay.backgroundColor']
-                : store.theme['toolbar.backgroundColor'],
+              store.theme['toolbar.backgroundColor'],
             )
           : store.theme['tab.hover.backgroundColor'],
       }}
@@ -237,16 +227,12 @@ export default observer(({ tab }: { tab: ITab }) => {
             ? shadeBlendConvert(
                 store.theme['tab.backgroundOpacity'],
                 tab.background,
-                store.overlay.currentContent !== 'default'
-                  ? store.theme['toolbar.overlay.backgroundColor']
-                  : store.theme['toolbar.backgroundColor'],
+                store.theme['toolbar.backgroundColor'],
               )
             : shadeBlendConvert(
                 0.9,
                 tab.customColor ? tab.background : 'rgba(0, 0, 0, 0.7)',
-                store.overlay.currentContent !== 'default'
-                  ? store.theme['toolbar.overlay.backgroundColor']
-                  : store.theme['toolbar.backgroundColor'],
+                store.theme['toolbar.backgroundColor'],
               ),
         }}
       >
