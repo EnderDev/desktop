@@ -1,4 +1,4 @@
-import { Menu, BrowserWindow } from 'electron';
+import { Menu, webContents } from 'electron';
 import { defaultTabOptions } from '~/constants/tabs';
 import { WindowsManager } from '../windows-manager';
 
@@ -157,7 +157,9 @@ export const getMainMenu = (windowsManager: WindowsManager) => {
           label: 'Toggle developer tools (window)',
           visible: false,
           click() {
-            BrowserWindow.getFocusedWindow().webContents.openDevTools();
+            setTimeout(() => {
+              webContents.getFocusedWebContents().openDevTools();
+            });
           },
         },
       ],
