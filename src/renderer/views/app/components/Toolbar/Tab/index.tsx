@@ -241,7 +241,13 @@ export default observer(({ tab }: { tab: ITab }) => {
                   ? store.theme['toolbar.overlay.backgroundColor']
                   : store.theme['toolbar.backgroundColor'],
               )
-            : 'transparent',
+            : shadeBlendConvert(
+                0.9,
+                tab.customColor ? tab.background : 'rgba(0, 0, 0, 0.7)',
+                store.overlay.currentContent !== 'default'
+                  ? store.theme['toolbar.overlay.backgroundColor']
+                  : store.theme['toolbar.backgroundColor'],
+              ),
         }}
       >
         <Content tab={tab} />
@@ -255,7 +261,6 @@ export default observer(({ tab }: { tab: ITab }) => {
           style={{ zIndex: 9 }}
         />
       </TabContainer>
-      <Border tab={tab} />
     </StyledTab>
   );
 });
