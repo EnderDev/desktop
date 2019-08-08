@@ -1,4 +1,4 @@
-import { ipcRenderer, remote } from 'electron';
+import { ipcRenderer, remote, ipcMain } from 'electron';
 
 import AutoComplete from './models/auto-complete';
 
