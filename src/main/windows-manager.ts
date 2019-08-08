@@ -1,5 +1,5 @@
 import { AppWindow } from './windows';
-import { app, Menu, ipcMain } from 'electron';
+import { app, Menu, ipcMain, session } from 'electron';
 import { isAbsolute, extname } from 'path';
 import { existsSync } from 'fs';
 import { getMainMenu } from './menus/main';
@@ -7,6 +7,7 @@ import { SessionsManager } from './sessions-manager';
 import { runAutoUpdaterService } from './services';
 import { checkFiles } from '~/utils/files';
 import { Settings } from './models/settings';
+import { registerProtocol } from './models/protocol';
 
 export class WindowsManager {
   public list: AppWindow[] = [];
@@ -67,6 +68,8 @@ export class WindowsManager {
     await app.whenReady();
 
     checkFiles();
+
+    registerProtocol(session.defaultSession);
 
     this.sessionsManager = new SessionsManager(this);
 
